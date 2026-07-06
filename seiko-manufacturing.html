@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>精工製作所 | 町工場の技術を、次の産業へ。</title>
+<meta name="description" content="精密加工・試作・小ロット生産で、お客様のイノベーションを支えます。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --bg:#0B0F14;
+  --panel:#1C2128;
+  --panel2:#12171E;
+  --gray:#A7ADB5;
+  --blue:#00B6FF;
+  --blue-dim:rgba(0,182,255,.14);
+  --blue-line:rgba(0,182,255,.35);
+  --line:rgba(167,173,181,.14);
+  --white:#EAF2F8;
+  --ease:cubic-bezier(.22,1,.36,1);
+  --font-jp:'Noto Sans JP',sans-serif;
+  --font-num:'Rajdhani','Noto Sans JP',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--white);
+  font-family:var(--font-jp);
+  font-feature-settings:"palt";
+  line-height:1.8;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--blue);color:#03121b}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+.en{font-family:var(--font-num);letter-spacing:.14em}
+
+/* ============ LOADER ============ */
+#loader{
+  position:fixed;inset:0;z-index:1000;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+  transition:opacity .7s var(--ease),visibility .7s;
+}
+#loader.done{opacity:0;visibility:hidden}
+#loader svg{width:72px;height:72px}
+#loader svg path{
+  fill:none;stroke:var(--blue);stroke-width:1.6;
+  stroke-dasharray:400;stroke-dashoffset:400;
+  animation:drawLogo 1.6s var(--ease) forwards;
+  filter:drop-shadow(0 0 8px rgba(0,182,255,.7));
+}
+@keyframes drawLogo{to{stroke-dashoffset:0}}
+#loader .bar{width:180px;height:1px;background:var(--line);overflow:hidden;position:relative}
+#loader .bar::after{
+  content:"";position:absolute;inset:0;background:var(--blue);
+  transform:translateX(-100%);animation:barFill 1.6s var(--ease) forwards;
+  box-shadow:0 0 12px var(--blue);
+}
+@keyframes barFill{to{transform:translateX(0)}}
+#loader .lt{font-size:10px;letter-spacing:.5em;color:var(--gray)}
+
+/* ============ NAV ============ */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:900;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;height:76px;
+  transition:background .4s,backdrop-filter .4s,height .4s,border-color .4s;
+  border-bottom:1px solid transparent;
+}
+header.scrolled{
+  background:rgba(11,15,20,.72);backdrop-filter:blur(16px);
+  border-bottom-color:var(--line);height:64px;
+}
+.logo{display:flex;align-items:center;gap:12px}
+.logo svg{width:34px;height:34px}
+.logo svg path{fill:none;stroke:var(--white);stroke-width:1.6}
+.logo .nm{font-weight:900;font-size:17px;letter-spacing:.12em}
+.logo .sb{display:block;font-size:8px;letter-spacing:.3em;color:var(--gray);font-weight:400;font-family:var(--font-num)}
+nav{display:flex;align-items:center;gap:34px}
+nav .lnk{
+  font-size:13px;letter-spacing:.14em;color:var(--gray);position:relative;
+  transition:color .3s;padding:6px 0;
+}
+nav .lnk::after{
+  content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;
+  background:var(--blue);transform:scaleX(0);transform-origin:right;
+  transition:transform .4s var(--ease);box-shadow:0 0 8px var(--blue);
+}
+nav .lnk:hover{color:var(--white)}
+nav .lnk:hover::after{transform:scaleX(1);transform-origin:left}
+
+/* ---- CTA button (hover expand & glow) ---- */
+.btn{
+  --pad:14px 30px;
+  position:relative;display:inline-flex;align-items:center;gap:14px;
+  padding:var(--pad);font-size:14px;font-weight:700;letter-spacing:.1em;
+  color:var(--white);background:linear-gradient(120deg,#0f6fa8,#00B6FF);
+  clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,14px 100%,0 calc(100% - 14px));
+  transition:transform .35s var(--ease),box-shadow .35s,filter .35s;
+  overflow:hidden;cursor:pointer;border:none;
+}
+.btn::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(120deg,transparent 30%,rgba(255,255,255,.35) 50%,transparent 70%);
+  transform:translateX(-110%);transition:transform .7s var(--ease);
+}
+.btn:hover{transform:scale(1.05);box-shadow:0 0 28px rgba(0,182,255,.55);filter:brightness(1.1)}
+.btn:hover::before{transform:translateX(110%)}
+.btn .arw{transition:transform .35s var(--ease);font-family:var(--font-num)}
+.btn:hover .arw{transform:translateX(6px)}
+.btn.ghost{
+  background:transparent;border:1px solid var(--blue-line);
+  clip-path:none;color:var(--blue);
+}
+.btn.ghost:hover{background:var(--blue-dim);box-shadow:0 0 20px rgba(0,182,255,.3)}
+.btn.sm{--pad:10px 20px;font-size:12px}
+
+/* ============ HERO ============ */
+.hero{
+  position:relative;min-height:100vh;display:flex;align-items:center;
+  padding:140px 40px 120px;overflow:hidden;
+}
+#particles{position:absolute;inset:0;z-index:1;pointer-events:none}
+.hero-bg{
+  position:absolute;inset:-12% 0;z-index:0;
+  background:
+    linear-gradient(90deg,rgba(11,15,20,.97) 0%,rgba(11,15,20,.82) 30%,rgba(9,16,24,.35) 62%,rgba(11,15,20,.5) 100%),
+    linear-gradient(180deg,rgba(11,15,20,.55) 0%,rgba(11,15,20,0) 32%,rgba(11,15,20,0) 62%,#0B0F14 100%),
+    radial-gradient(ellipse 60% 50% at 72% 42%,rgba(0,140,230,.28),transparent 65%),
+    url('https://images.unsplash.com/photo-1713371398485-7bde1bde9def?q=75&w=1800&auto=format&fit=crop') center 38%/cover no-repeat #0B0F14;
+  filter:saturate(.9) contrast(1.06);
+  will-change:transform;
+}
+.hero-grid{
+  position:absolute;inset:0;z-index:1;opacity:.5;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(0,182,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(0,182,255,.05) 1px,transparent 1px);
+  background-size:64px 64px;
+  mask-image:radial-gradient(ellipse 70% 60% at 60% 45%,#000 30%,transparent 75%);
+  -webkit-mask-image:radial-gradient(ellipse 70% 60% at 60% 45%,#000 30%,transparent 75%);
+}
+.hero-machine{
+  position:absolute;right:-4%;top:50%;transform:translateY(-50%);
+  width:min(52vw,780px);z-index:2;opacity:.5;will-change:transform;
+  mix-blend-mode:screen;
+}
+.hero-machine svg{width:100%;height:auto}
+.hero-machine .draw{
+  fill:none;stroke:rgba(0,182,255,.55);stroke-width:1.1;
+  stroke-dasharray:1200;stroke-dashoffset:1200;
+}
+.hero-machine .draw.d2{stroke:rgba(167,173,181,.35)}
+.hero.on .hero-machine .draw{animation:draw 2.8s var(--ease) forwards}
+.hero.on .hero-machine .draw:nth-child(2){animation-delay:.2s}
+.hero.on .hero-machine .draw:nth-child(3){animation-delay:.4s}
+.hero.on .hero-machine .draw:nth-child(4){animation-delay:.6s}
+.hero.on .hero-machine .draw:nth-child(5){animation-delay:.8s}
+.hero.on .hero-machine .draw:nth-child(6){animation-delay:1s}
+.hero.on .hero-machine .draw:nth-child(7){animation-delay:1.2s}
+@keyframes draw{to{stroke-dashoffset:0}}
+.spark{
+  position:absolute;width:5px;height:5px;border-radius:50%;
+  background:var(--blue);box-shadow:0 0 14px 3px rgba(0,182,255,.8);
+  animation:sparkle 2.2s ease-in-out infinite;
+}
+@keyframes sparkle{0%,100%{opacity:.2;transform:scale(.6)}50%{opacity:1;transform:scale(1.3)}}
+
+.hero-inner{position:relative;z-index:3;max-width:1280px;margin:0 auto;width:100%}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:.4em;
+  color:var(--blue);border:1px solid var(--blue-line);padding:7px 18px;margin-bottom:34px;
+  background:rgba(0,182,255,.06);
+}
+.hero-tag::before{content:"";width:6px;height:6px;background:var(--blue);border-radius:50%;
+  box-shadow:0 0 10px var(--blue);animation:sparkle 2s infinite}
+h1{
+  font-size:clamp(38px,5.6vw,76px);font-weight:900;line-height:1.28;
+  letter-spacing:.04em;margin-bottom:28px;
+}
+h1 .ln{display:block;overflow:hidden}
+h1 .ln span{display:inline-block;transform:translateY(110%);transition:transform 1s var(--ease)}
+h1 .ln:nth-child(2) span{transition-delay:.12s}
+.hero.on h1 .ln span{transform:translateY(0)}
+h1 em{font-style:normal;color:var(--blue);text-shadow:0 0 32px rgba(0,182,255,.55)}
+.hero-lead{
+  font-size:clamp(14px,1.3vw,17px);color:var(--gray);max-width:520px;margin-bottom:44px;
+  opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease) .4s,transform 1s var(--ease) .4s;
+}
+.hero.on .hero-lead{opacity:1;transform:none}
+.hero-cta{opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease) .55s,transform 1s var(--ease) .55s}
+.hero.on .hero-cta{opacity:1;transform:none}
+
+.hero-stats{
+  display:flex;gap:0;margin-top:72px;border:1px solid var(--line);
+  background:rgba(18,23,30,.6);backdrop-filter:blur(8px);max-width:720px;
+  opacity:0;transform:translateY(24px);transition:opacity 1s var(--ease) .7s,transform 1s var(--ease) .7s;
+}
+.hero.on .hero-stats{opacity:1;transform:none}
+.stat{flex:1;padding:26px 30px;position:relative}
+.stat+.stat{border-left:1px solid var(--line)}
+.stat .lb{font-size:11px;letter-spacing:.24em;color:var(--gray);margin-bottom:6px}
+.stat .vl{font-family:var(--font-num);font-size:clamp(26px,2.6vw,38px);font-weight:600;color:var(--white);line-height:1.1}
+.stat .vl b{color:var(--blue);font-weight:700;text-shadow:0 0 20px rgba(0,182,255,.5)}
+.stat .un{font-size:12px;color:var(--gray);margin-left:4px;font-family:var(--font-jp)}
+.stat::after{
+  content:"";position:absolute;left:30px;bottom:18px;width:28px;height:2px;
+  background:var(--blue);box-shadow:0 0 8px var(--blue);
+}
+
+.scroll-hint{
+  position:absolute;left:40px;bottom:36px;z-index:3;display:flex;align-items:center;gap:14px;
+  font-size:10px;letter-spacing:.4em;color:var(--gray);
+}
+.scroll-hint .wire{width:1px;height:56px;background:var(--line);position:relative;overflow:hidden}
+.scroll-hint .wire::after{
+  content:"";position:absolute;top:-40%;left:0;width:100%;height:40%;
+  background:var(--blue);animation:scrollWire 2s var(--ease) infinite;box-shadow:0 0 6px var(--blue);
+}
+@keyframes scrollWire{to{top:120%}}
+
+/* ============ SECTION SCAFFOLD ============ */
+section{position:relative;padding:130px 40px}
+.wrap{max-width:1280px;margin:0 auto}
+.sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:64px;flex-wrap:wrap}
+.sec-title{display:flex;flex-direction:column;gap:10px}
+.sec-title .en-lb{font-size:11px;letter-spacing:.45em;color:var(--blue);font-family:var(--font-num);display:flex;align-items:center;gap:12px}
+.sec-title .en-lb::before{content:"";width:36px;height:1px;background:var(--blue);box-shadow:0 0 8px var(--blue)}
+.sec-title h2{font-size:clamp(28px,3.4vw,46px);font-weight:900;letter-spacing:.06em;line-height:1.3}
+.view-all{
+  font-family:var(--font-num);font-size:12px;letter-spacing:.3em;color:var(--gray);
+  display:inline-flex;align-items:center;gap:10px;transition:color .3s;
+}
+.view-all:hover{color:var(--blue)}
+.view-all .arw{transition:transform .3s var(--ease)}
+.view-all:hover .arw{transform:translateX(6px)}
+
+/* ---- scroll reveal ---- */
+.rv{opacity:0;transform:translateY(38px);transition:opacity 1s var(--ease),transform 1s var(--ease)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}.rv.d4{transition-delay:.4s}.rv.d5{transition-delay:.5s}
+
+/* ============ STRENGTHS ============ */
+#strengths{background:linear-gradient(180deg,var(--bg),#0d1219 50%,var(--bg))}
+.str-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.str-card{
+  position:relative;padding:38px 28px 34px;background:var(--panel2);
+  border:1px solid var(--line);overflow:hidden;
+  transition:transform .45s var(--ease),border-color .45s,box-shadow .45s;
+  clip-path:polygon(0 0,calc(100% - 18px) 0,100% 18px,100% 100%,0 100%);
+}
+.str-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(0,182,255,.12),transparent 70%);
+  opacity:0;transition:opacity .45s;
+}
+.str-card:hover{transform:translateY(-8px);border-color:var(--blue-line);box-shadow:0 18px 44px rgba(0,0,0,.5),0 0 24px rgba(0,182,255,.12)}
+.str-card:hover::before{opacity:1}
+.str-ico{
+  width:58px;height:58px;margin-bottom:26px;display:grid;place-items:center;
+  border:1px solid var(--blue-line);background:rgba(0,182,255,.06);
+  clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%);
+  transition:box-shadow .45s,transform .45s var(--ease);
+}
+.str-card:hover .str-ico{box-shadow:0 0 24px rgba(0,182,255,.45);transform:rotate(8deg) scale(1.06)}
+.str-ico svg{width:26px;height:26px;fill:none;stroke:var(--blue);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.str-card h3{font-size:17px;font-weight:700;letter-spacing:.08em;margin-bottom:12px}
+.str-card p{font-size:13px;color:var(--gray);line-height:1.9}
+.str-num{
+  position:absolute;top:18px;right:20px;font-family:var(--font-num);
+  font-size:12px;color:rgba(167,173,181,.4);letter-spacing:.2em;
+}
+
+/* ============ TECH ============ */
+.tech-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.tech-card{
+  position:relative;height:280px;border:1px solid var(--line);overflow:hidden;
+  cursor:pointer;background:var(--panel2);
+}
+.tech-visual{
+  position:absolute;inset:0;transition:transform .8s var(--ease),filter .8s;
+  filter:saturate(.7) brightness(.85);
+}
+.tech-card:hover .tech-visual{transform:scale(1.07);filter:saturate(1.1) brightness(1)}
+/* mask reveal on scroll-in */
+.mask-rv{clip-path:inset(0 100% 0 0);transition:clip-path 1.2s var(--ease)}
+.mask-rv.in{clip-path:inset(0 0 0 0)}
+.tech-visual .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tech-visual .metal{
+  position:absolute;inset:0;
+  background:
+    radial-gradient(ellipse 70% 90% at 60% 30%,rgba(0,140,220,.20),transparent 65%),
+    linear-gradient(160deg,rgba(0,50,95,.30),rgba(11,15,20,.62));
+}
+.tech-visual .metal.v2{background:radial-gradient(ellipse 80% 70% at 30% 60%,rgba(0,150,230,.18),transparent 65%),linear-gradient(200deg,rgba(0,45,85,.30),rgba(11,15,20,.62))}
+.tech-visual .metal.v3{background:radial-gradient(ellipse 60% 80% at 70% 60%,rgba(40,170,255,.16),transparent 60%),linear-gradient(140deg,rgba(0,55,100,.30),rgba(11,15,20,.62))}
+.tech-visual svg{position:absolute;inset:0;width:100%;height:100%}
+.tech-visual svg *{fill:none;stroke:rgba(0,182,255,.5);stroke-width:1;vector-effect:non-scaling-stroke}
+.tech-visual svg .g2{stroke:rgba(167,173,181,.3)}
+.tech-card .sch{stroke-dasharray:600;stroke-dashoffset:600;transition:stroke-dashoffset 2.4s var(--ease) .3s}
+.tech-card.in .sch{stroke-dashoffset:0}
+.tech-info{
+  position:absolute;left:0;right:0;bottom:0;padding:22px 24px;z-index:2;
+  background:linear-gradient(180deg,transparent,rgba(11,15,20,.94) 45%);
+  display:flex;align-items:flex-end;justify-content:space-between;gap:12px;
+}
+.tech-info h3{font-size:17px;font-weight:700;letter-spacing:.08em;margin-bottom:4px}
+.tech-info p{font-size:12px;color:var(--gray)}
+.tech-info .go{
+  flex-shrink:0;width:38px;height:38px;border:1px solid var(--blue-line);border-radius:50%;
+  display:grid;place-items:center;color:var(--blue);font-family:var(--font-num);
+  transition:background .35s,box-shadow .35s,transform .35s var(--ease);
+}
+.tech-card:hover .go{background:var(--blue);color:#03121b;box-shadow:0 0 20px rgba(0,182,255,.6);transform:translateX(4px)}
+.tech-card .scanline{
+  position:absolute;left:0;right:0;top:-30%;height:30%;z-index:1;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(0,182,255,.14),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.tech-card:hover .scanline{opacity:1;animation:scan 1.6s linear infinite}
+@keyframes scan{to{top:130%}}
+.tech-corner{position:absolute;width:16px;height:16px;z-index:2;pointer-events:none;opacity:.9}
+.tech-corner.tl{top:10px;left:10px;border-top:1.5px solid var(--blue);border-left:1.5px solid var(--blue)}
+.tech-corner.br{bottom:10px;right:10px;border-bottom:1.5px solid var(--blue);border-right:1.5px solid var(--blue)}
+
+/* ============ CASES ============ */
+#cases{background:linear-gradient(180deg,var(--bg),#0d1219 60%,var(--bg))}
+.case-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.case-card{
+  border:1px solid var(--line);background:var(--panel2);overflow:hidden;
+  transition:transform .45s var(--ease),border-color .45s,box-shadow .45s;
+}
+.case-card:hover{transform:translateY(-8px);border-color:var(--blue-line);box-shadow:0 20px 48px rgba(0,0,0,.55)}
+.case-vis{position:relative;height:190px;overflow:hidden}
+.case-vis .metal,.case-vis .ph{position:absolute;inset:0;transition:transform .8s var(--ease)}
+.case-vis .ph{width:100%;height:100%;object-fit:cover;filter:saturate(.85) brightness(.9)}
+.case-vis .metal{background:radial-gradient(ellipse 70% 90% at 60% 30%,rgba(0,140,220,.16),transparent 65%),linear-gradient(160deg,rgba(0,50,95,.28),rgba(11,15,20,.55))!important}
+.case-card:hover .case-vis .metal,.case-card:hover .case-vis .ph{transform:scale(1.08)}
+.case-vis svg{position:absolute;inset:0;width:100%;height:100%}
+.case-vis svg *{fill:none;stroke-width:1;vector-effect:non-scaling-stroke}
+.case-tag{
+  position:absolute;top:14px;left:14px;font-size:10px;letter-spacing:.25em;
+  color:var(--blue);border:1px solid var(--blue-line);padding:4px 12px;
+  background:rgba(11,15,20,.7);backdrop-filter:blur(4px);font-family:var(--font-num);
+}
+.case-body{padding:24px}
+.case-body h3{font-size:16px;font-weight:700;letter-spacing:.06em;margin-bottom:16px;display:flex;justify-content:space-between;align-items:center}
+.case-body h3 .arw{color:var(--blue);font-family:var(--font-num);transition:transform .35s var(--ease)}
+.case-card:hover h3 .arw{transform:translateX(6px)}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:4px 18px;font-size:12px}
+.spec dt{color:var(--gray);letter-spacing:.1em}
+.spec dd{font-family:var(--font-num);letter-spacing:.06em;color:var(--white)}
+.spec dd b{color:var(--blue);font-weight:600}
+
+/* ============ QUALITY ============ */
+.q-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.q-list{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line)}
+.q-item{
+  display:flex;align-items:center;gap:20px;padding:22px 8px;
+  border-bottom:1px solid var(--line);transition:background .3s,padding-left .3s var(--ease);
+}
+.q-item:hover{background:rgba(0,182,255,.04);padding-left:18px}
+.q-item .chk{
+  flex-shrink:0;width:40px;height:40px;border:1px solid var(--blue-line);border-radius:50%;
+  display:grid;place-items:center;
+}
+.q-item .chk svg{width:16px;height:16px;fill:none;stroke:var(--blue);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.q-item .chk svg path{stroke-dasharray:30;stroke-dashoffset:30;transition:stroke-dashoffset .8s var(--ease) .3s}
+.q-item.in .chk svg path{stroke-dashoffset:0}
+.q-item h4{font-size:15px;font-weight:700;letter-spacing:.06em}
+.q-item p{font-size:12px;color:var(--gray)}
+.q-visual{position:relative;height:420px;border:1px solid var(--line);background:var(--panel2);overflow:hidden}
+.q-visual .ph{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:saturate(.7) brightness(.45) contrast(1.05)}
+.q-visual .tint{position:absolute;inset:0;background:radial-gradient(ellipse 70% 60% at 50% 40%,rgba(0,140,220,.18),transparent 70%),linear-gradient(180deg,rgba(11,15,20,.35),rgba(11,15,20,.6))}
+.q-visual svg{position:absolute;inset:0;width:100%;height:100%}
+.q-visual .hud-tl{position:absolute;top:16px;left:18px;font-family:var(--font-num);font-size:10px;letter-spacing:.3em;color:var(--blue);display:flex;gap:8px;align-items:center}
+.q-visual .hud-tl::before{content:"";width:7px;height:7px;background:var(--blue);border-radius:50%;box-shadow:0 0 10px var(--blue);animation:sparkle 1.6s infinite}
+.q-visual .hud-br{position:absolute;bottom:14px;right:18px;font-family:var(--font-num);font-size:10px;letter-spacing:.2em;color:var(--gray);text-align:right;line-height:1.7}
+.q-visual .hud-br b{color:var(--blue);font-weight:600}
+
+/* ============ CONTACT ============ */
+#contact{padding:0 40px 130px}
+.contact-band{
+  position:relative;overflow:hidden;border:1px solid var(--blue-line);
+  background:
+    radial-gradient(ellipse 70% 120% at 15% 100%,rgba(0,182,255,.20),transparent 60%),
+    radial-gradient(ellipse 50% 100% at 90% 0%,rgba(0,120,200,.16),transparent 60%),
+    var(--panel2);
+  padding:72px 64px;display:flex;align-items:center;justify-content:space-between;gap:44px;flex-wrap:wrap;
+}
+.contact-band::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background-image:linear-gradient(rgba(0,182,255,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,182,255,.05) 1px,transparent 1px);
+  background-size:44px 44px;
+  mask-image:radial-gradient(ellipse 80% 90% at 20% 100%,#000,transparent 70%);
+  -webkit-mask-image:radial-gradient(ellipse 80% 90% at 20% 100%,#000,transparent 70%);
+}
+.contact-band h2{font-size:clamp(24px,3vw,40px);font-weight:900;letter-spacing:.08em;margin-bottom:10px}
+.contact-band .sub{font-size:13px;color:var(--gray)}
+.contact-info{display:flex;flex-direction:column;gap:18px;position:relative;z-index:1}
+.ci-row{display:flex;align-items:center;gap:16px}
+.ci-row .ic{width:42px;height:42px;border:1px solid var(--blue-line);display:grid;place-items:center;background:rgba(0,182,255,.06)}
+.ci-row .ic svg{width:18px;height:18px;fill:none;stroke:var(--blue);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.ci-row .tel{font-family:var(--font-num);font-size:26px;font-weight:600;letter-spacing:.08em;line-height:1.2}
+.ci-row .note{font-size:11px;color:var(--gray)}
+
+/* ============ FOOTER ============ */
+footer{
+  border-top:1px solid var(--line);padding:44px 40px;
+  display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+footer .cp{font-size:11px;color:var(--gray);letter-spacing:.14em;font-family:var(--font-num)}
+footer .tags{display:flex;gap:26px;font-family:var(--font-num);font-size:11px;letter-spacing:.3em;color:var(--gray)}
+footer .tags span{display:flex;align-items:center;gap:8px}
+footer .tags span::before{content:"/";color:var(--blue)}
+
+/* ============ marquee ============ */
+.marquee{
+  overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:18px 0;background:var(--panel2);white-space:nowrap;
+}
+.marquee .track{display:inline-flex;gap:64px;animation:mq 30s linear infinite;will-change:transform}
+.marquee span{
+  font-family:var(--font-num);font-size:13px;letter-spacing:.5em;color:rgba(167,173,181,.55);
+  display:inline-flex;align-items:center;gap:64px;
+}
+.marquee b{color:var(--blue);font-weight:400}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* ============ responsive ============ */
+@media(max-width:1024px){
+  .str-grid{grid-template-columns:repeat(2,1fr)}
+  .tech-grid{grid-template-columns:repeat(2,1fr)}
+  .case-grid{grid-template-columns:1fr}
+  .q-grid{grid-template-columns:1fr}
+  .hero-machine{opacity:.35;width:80vw}
+}
+@media(max-width:640px){
+  header,section,#contact{padding-left:22px;padding-right:22px}
+  nav .lnk{display:none}
+  .str-grid,.tech-grid{grid-template-columns:1fr}
+  .hero{padding:120px 22px 100px}
+  .hero-stats{flex-direction:column}
+  .stat+.stat{border-left:none;border-top:1px solid var(--line)}
+  .scroll-hint{display:none}
+  .contact-band{padding:48px 28px}
+}
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ LOADER ============ -->
+<div id="loader">
+  <svg viewBox="0 0 48 48"><path d="M24 4 L42 14 V34 L24 44 L6 34 V14 Z M24 4 V24 M6 14 L24 24 L42 14 M24 24 V44 M15 9.5 V29 M33 9.5 V29"/></svg>
+  <div class="bar"></div>
+  <div class="lt en">SEIKO MANUFACTURING</div>
+</div>
+
+<!-- ============ NAV ============ -->
+<header id="header">
+  <a class="logo" href="#top">
+    <svg viewBox="0 0 48 48"><path d="M24 4 L42 14 V34 L24 44 L6 34 V14 Z M24 4 V24 M6 14 L24 24 L42 14 M24 24 V44"/></svg>
+    <div><span class="nm">精工製作所</span><span class="sb en">SEIKO MANUFACTURING</span></div>
+  </a>
+  <nav>
+    <a class="lnk" href="#strengths">私たちの強み</a>
+    <a class="lnk" href="#tech">加工技術</a>
+    <a class="lnk" href="#cases">導入事例</a>
+    <a class="lnk" href="#quality">品質管理</a>
+    <a class="lnk" href="#contact">会社案内</a>
+    <a class="btn sm" href="#contact">お問い合わせ <span class="arw">→</span></a>
+  </nav>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="top">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-grid"></div>
+  <canvas id="particles"></canvas>
+
+  <!-- machining schematic (line-draw animation) -->
+  <div class="hero-machine" id="heroMachine">
+    <svg viewBox="0 0 600 520">
+      <path class="draw" d="M250 20 H350 V70 H330 V120 H270 V70 H250 Z"/>
+      <path class="draw" d="M285 120 H315 V190 L305 210 H295 L285 190 Z"/>
+      <path class="draw d2" d="M180 60 H250 M350 60 H430 M430 40 V90 M180 40 V90"/>
+      <path class="draw" d="M296 210 L300 250 L304 210"/>
+      <path class="draw" d="M140 280 H460 L440 340 H160 Z"/>
+      <path class="draw d2" d="M200 280 V250 H400 V280 M240 250 V265 H360 V250"/>
+      <path class="draw d2" d="M120 360 H480 M120 380 H480 M160 340 V440 M440 340 V440 M160 440 H440 M300 250 m-46 0 a46 46 0 1 0 92 0 a46 46 0 1 0 -92 0 M300 250 m-28 0 a28 28 0 1 0 56 0 a28 28 0 1 0 -56 0"/>
+    </svg>
+    <div class="spark" style="left:49%;top:48%"></div>
+    <div class="spark" style="left:46%;top:52%;animation-delay:.5s"></div>
+    <div class="spark" style="left:52%;top:51%;animation-delay:1.1s"></div>
+  </div>
+
+  <div class="hero-inner">
+    <div class="hero-tag en">PRECISION MACHINING / SINCE 1968</div>
+    <h1>
+      <span class="ln"><span>町工場の<em>技術</em>を、</span></span>
+      <span class="ln"><span>次の産業へ。</span></span>
+    </h1>
+    <p class="hero-lead">精密加工・試作・小ロット生産で、お客様のイノベーションを支えます。ミクロン単位の精度と、半世紀を超えて磨かれた技術で。</p>
+    <div class="hero-cta">
+      <a class="btn" href="#contact">お問い合わせはこちら <span class="arw">→</span></a>
+    </div>
+
+    <div class="hero-stats">
+      <div class="stat">
+        <div class="lb">創業</div>
+        <div class="vl"><span class="count" data-to="1968" data-dur="1800">0</span><span class="un">年</span></div>
+      </div>
+      <div class="stat">
+        <div class="lb">対応ロット</div>
+        <div class="vl"><b class="count" data-to="1" data-dur="1200">0</b><span class="un">個〜 小ロット量産</span></div>
+      </div>
+      <div class="stat">
+        <div class="lb">精度</div>
+        <div class="vl">±<b class="count" data-to="0.001" data-dec="3" data-dur="2200">0.000</b><span class="un">mm 対応</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="scroll-hint en">SCROLL<div class="wire"></div></div>
+</section>
+
+<!-- ============ MARQUEE ============ -->
+<div class="marquee" aria-hidden="true">
+  <div class="track">
+    <span>PRECISION <b>/</b> MACHINING <b>/</b> PROTOTYPE <b>/</b> SMALL LOT <b>/</b> ±0.001mm <b>/</b> ISO9001 <b>/</b> SINCE 1968 <b>/</b></span>
+    <span>PRECISION <b>/</b> MACHINING <b>/</b> PROTOTYPE <b>/</b> SMALL LOT <b>/</b> ±0.001mm <b>/</b> ISO9001 <b>/</b> SINCE 1968 <b>/</b></span>
+  </div>
+</div>
+
+<!-- ============ STRENGTHS ============ -->
+<section id="strengths">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-title">
+        <span class="en-lb">OUR STRENGTHS</span>
+        <h2>私たちの強み</h2>
+      </div>
+    </div>
+    <div class="str-grid">
+      <div class="str-card rv">
+        <span class="str-num">01</span>
+        <div class="str-ico"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="1" fill="currentColor"/></svg></div>
+        <h3>高精度加工</h3>
+        <p>最新設備と熟練技術で、ミクロン単位の高精度を実現。要求精度±0.001mmにも対応します。</p>
+      </div>
+      <div class="str-card rv d1">
+        <span class="str-num">02</span>
+        <div class="str-ico"><svg viewBox="0 0 24 24"><path d="M12 2l8 4.5v9L12 20l-8-4.5v-9L12 2z"/><path d="M12 2v9M4 6.5l8 4.5 8-4.5M12 11v9"/></svg></div>
+        <h3>試作から量産まで対応</h3>
+        <p>1個の試作から小ロット量産まで、フェーズに合わせて柔軟に対応します。</p>
+      </div>
+      <div class="str-card rv d2">
+        <span class="str-num">03</span>
+        <div class="str-ico"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.7-3 3-5 5.5-5s4.8 2 5.5 5"/><circle cx="17" cy="7" r="2.4"/><path d="M15.5 12.5c2.3.2 4.2 1.8 4.9 4.5"/></svg></div>
+        <h3>エンジニアとの伴走</h3>
+        <p>設計段階からのご相談も可能。最適な加工方法をご提案し、開発を加速します。</p>
+      </div>
+      <div class="str-card rv d3">
+        <span class="str-num">04</span>
+        <div class="str-ico"><svg viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.5 8.8-8 11-4.5-2.2-8-6-8-11V5l8-3z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg></div>
+        <h3>徹底した品質管理</h3>
+        <p>検査体制とトレーサビリティで、一つひとつの部品の品質を保証します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TECH ============ -->
+<section id="tech">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-title">
+        <span class="en-lb">TECHNOLOGY</span>
+        <h2>加工技術</h2>
+      </div>
+      <a class="view-all en" href="#contact">VIEW ALL <span class="arw">→</span></a>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-card rv">
+        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
+        <div class="scanline"></div>
+        <div class="tech-visual mask-rv"><img class="ph" loading="lazy" alt="マシニング加工" src="https://images.unsplash.com/photo-1713371398484-cc4e4f6a262a?q=65&w=900&auto=format&fit=crop"><div class="metal"></div>
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <path class="sch" d="M170 40 h60 v30 h-14 v40 h-32 V70 h-14z M193 110 h14 v46 l-7 12 -7 -12z"/>
+            <path class="sch g2" d="M100 190 h200 l-14 40 H114z M60 250 h280"/>
+            <circle class="sch" cx="200" cy="205" r="22"/>
+          </svg>
+        </div>
+        <div class="tech-info"><div><h3>マシニング加工</h3><p>複雑形状の高精度加工</p></div><span class="go">→</span></div>
+      </div>
+      <div class="tech-card rv d1">
+        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
+        <div class="scanline"></div>
+        <div class="tech-visual mask-rv"><img class="ph" loading="lazy" alt="旋盤加工" src="https://images.unsplash.com/photo-1666634157070-6fd830fb5672?q=65&w=900&auto=format&fit=crop"><div class="metal v2"></div>
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <path class="sch" d="M60 140 h120 m0 -26 h130 v52 h-130 z m130 10 h30 v32 h-30"/>
+            <circle class="sch g2" cx="120" cy="140" r="46"/><circle class="sch" cx="120" cy="140" r="28"/><circle class="sch g2" cx="120" cy="140" r="8"/>
+          </svg>
+        </div>
+        <div class="tech-info"><div><h3>旋盤加工</h3><p>丸物・シャフトの高精度加工</p></div><span class="go">→</span></div>
+      </div>
+      <div class="tech-card rv d2">
+        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
+        <div class="scanline"></div>
+        <div class="tech-visual mask-rv"><img class="ph" loading="lazy" alt="ワイヤー放電加工" src="https://images.unsplash.com/photo-1711418235334-8895331a6cf9?q=65&w=900&auto=format&fit=crop"><div class="metal v3"></div>
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <path class="sch" d="M200 30 v90 m0 40 v90"/>
+            <path class="sch g2" d="M120 120 h160 v40 h-160z"/>
+            <path class="sch" d="M150 140 h40 m20 0 h40 M200 120 l-8 20 8 20 8 -20z"/>
+          </svg>
+        </div>
+        <div class="tech-info"><div><h3>ワイヤー放電加工</h3><p>難削材・微細形状の加工</p></div><span class="go">→</span></div>
+      </div>
+      <div class="tech-card rv">
+        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
+        <div class="scanline"></div>
+        <div class="tech-visual mask-rv"><img class="ph" loading="lazy" alt="研削加工" src="https://images.unsplash.com/photo-1666618090858-fbcee636bd3e?q=65&w=900&auto=format&fit=crop"><div class="metal v2"></div>
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <circle class="sch" cx="200" cy="110" r="60"/><circle class="sch g2" cx="200" cy="110" r="42"/>
+            <path class="sch g2" d="M80 200 h240 v24 H80z M110 224 v26 m180 -26 v26"/>
+            <path class="sch" d="M140 200 q60 -18 120 0"/>
+          </svg>
+        </div>
+        <div class="tech-info"><div><h3>研削加工</h3><p>高精度な平面・円筒仕上げ</p></div><span class="go">→</span></div>
+      </div>
+      <div class="tech-card rv d1">
+        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
+        <div class="scanline"></div>
+        <div class="tech-visual mask-rv"><img class="ph" loading="lazy" alt="表面処理" src="https://images.unsplash.com/photo-1625464660011-b4900262e101?q=65&w=900&auto=format&fit=crop"><div class="metal"></div>
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <path class="sch" d="M110 90 h180 v100 H110z"/>
+            <path class="sch g2" d="M110 120 h180 M110 150 h180 M140 90 v100 M200 90 v100 M260 90 v100"/>
+            <path class="sch" d="M90 230 h220"/>
+          </svg>
+        </div>
+        <div class="tech-info"><div><h3>表面処理</h3><p>各種処理で機能と信頼性を向上</p></div><span class="go">→</span></div>
+      </div>
+      <div class="tech-card rv d2">
+        <div class="tech-corner tl"></div><div class="tech-corner br"></div>
+        <div class="scanline"></div>
+        <div class="tech-visual mask-rv"><img class="ph" loading="lazy" alt="組立・ユニット化" src="https://images.unsplash.com/photo-1625464733746-f884014c73bc?q=65&w=900&auto=format&fit=crop"><div class="metal v3"></div>
+          <svg viewBox="0 0 400 280" preserveAspectRatio="xMidYMid slice">
+            <path class="sch" d="M130 60 l70 -20 70 20 v120 l-70 60 -70 -60z"/>
+            <path class="sch g2" d="M130 60 l70 30 70 -30 M200 90 v150"/>
+            <circle class="sch" cx="200" cy="140" r="24"/>
+          </svg>
+        </div>
+        <div class="tech-info"><div><h3>組立・ユニット化</h3><p>加工から組立まで一貫対応</p></div><span class="go">→</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CASES ============ -->
+<section id="cases">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-title">
+        <span class="en-lb">CASE STUDY</span>
+        <h2>導入事例</h2>
+      </div>
+      <a class="view-all en" href="#contact">VIEW ALL <span class="arw">→</span></a>
+    </div>
+    <div class="case-grid">
+      <div class="case-card rv">
+        <div class="case-vis">
+          <img class="ph" loading="lazy" alt="半導体製造装置部品" src="https://images.unsplash.com/photo-1625464736592-fab7c7bc4e2e?q=65&w=900&auto=format&fit=crop"><div class="metal"></div>
+          <svg viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice"><circle cx="200" cy="95" r="58" stroke="rgba(0,182,255,.5)"/><circle cx="200" cy="95" r="36" stroke="rgba(167,173,181,.35)"/><circle cx="200" cy="95" r="14" stroke="rgba(0,182,255,.5)"/><path d="M200 37 v-16 M200 153 v16 M142 95 h-16 M258 95 h16" stroke="rgba(167,173,181,.35)"/></svg>
+          <span class="case-tag">SEMICONDUCTOR</span>
+        </div>
+        <div class="case-body">
+          <h3>半導体製造装置部品 <span class="arw">→</span></h3>
+          <dl class="spec">
+            <dt>材質</dt><dd>SUS304</dd>
+            <dt>精度</dt><dd><b>±0.005mm</b></dd>
+            <dt>ロット</dt><dd>5個</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="case-card rv d1">
+        <div class="case-vis">
+          <img class="ph" loading="lazy" alt="医療機器部品" src="https://images.unsplash.com/photo-1624841970647-87dce8628d72?q=65&w=900&auto=format&fit=crop"><div class="metal"></div>
+          <svg viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice"><rect x="130" y="55" width="140" height="80" rx="14" stroke="rgba(0,182,255,.5)"/><rect x="152" y="73" width="96" height="44" rx="8" stroke="rgba(167,173,181,.35)"/><path d="M130 95 h-24 M270 95 h24" stroke="rgba(0,182,255,.5)"/></svg>
+          <span class="case-tag">MEDICAL</span>
+        </div>
+        <div class="case-body">
+          <h3>医療機器部品 <span class="arw">→</span></h3>
+          <dl class="spec">
+            <dt>材質</dt><dd>チタン合金</dd>
+            <dt>精度</dt><dd><b>±0.002mm</b></dd>
+            <dt>ロット</dt><dd>10個</dd>
+          </dl>
+        </div>
+      </div>
+      <div class="case-card rv d2">
+        <div class="case-vis">
+          <img class="ph" loading="lazy" alt="航空宇宙機器部品" src="https://images.unsplash.com/photo-1624841971070-73a6c96b8d53?q=65&w=900&auto=format&fit=crop"><div class="metal"></div>
+          <svg viewBox="0 0 400 190" preserveAspectRatio="xMidYMid slice"><path d="M120 130 L200 45 L280 130 Z" stroke="rgba(0,182,255,.5)"/><path d="M152 130 L200 78 L248 130" stroke="rgba(167,173,181,.35)"/><path d="M96 152 h208" stroke="rgba(0,182,255,.5)"/></svg>
+          <span class="case-tag">AEROSPACE</span>
+        </div>
+        <div class="case-body">
+          <h3>航空宇宙機器部品 <span class="arw">→</span></h3>
+          <dl class="spec">
+            <dt>材質</dt><dd>A7075</dd>
+            <dt>精度</dt><dd><b>±0.01mm</b></dd>
+            <dt>ロット</dt><dd>20個</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ QUALITY ============ -->
+<section id="quality">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="sec-title">
+        <span class="en-lb">QUALITY</span>
+        <h2>品質管理</h2>
+      </div>
+    </div>
+    <div class="q-grid">
+      <div class="q-list">
+        <div class="q-item rv">
+          <div class="chk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <div><h4>三次元測定機による全数検査</h4><p>ミクロン単位で寸法を保証します。</p></div>
+        </div>
+        <div class="q-item rv d1">
+          <div class="chk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <div><h4>ISO9001:2015 認証取得</h4><p>国際規格に基づく品質マネジメント体制。</p></div>
+        </div>
+        <div class="q-item rv d2">
+          <div class="chk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <div><h4>検査成績書の発行・トレーサビリティ管理</h4><p>材料から出荷まで、すべての工程を追跡可能に。</p></div>
+        </div>
+        <div class="q-item rv d3">
+          <div class="chk"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div>
+          <div><h4>クリーンな検査環境</h4><p>温度管理された測定室で安定した精度を維持。</p></div>
+        </div>
+      </div>
+      <div class="q-visual rv d2">
+        <img class="ph" loading="lazy" alt="三次元測定" src="https://images.unsplash.com/photo-1591639713936-6fafe6748de0?q=65&w=1100&auto=format&fit=crop">
+        <div class="tint"></div>
+        <div class="hud-tl en">MEASURING…</div>
+        <svg viewBox="0 0 520 420">
+          <defs>
+            <radialGradient id="qg" cx="50%" cy="42%" r="60%">
+              <stop offset="0%" stop-color="rgba(0,140,220,.25)"/><stop offset="100%" stop-color="transparent"/>
+            </radialGradient>
+          </defs>
+          <rect width="520" height="420" fill="url(#qg)"/>
+          <g fill="none" stroke="rgba(0,182,255,.08)"><path d="M0 60 H520 M0 120 H520 M0 180 H520 M0 240 H520 M0 300 H520 M0 360 H520 M60 0 V420 M130 0 V420 M200 0 V420 M270 0 V420 M340 0 V420 M410 0 V420 M480 0 V420"/></g>
+          <!-- probe -->
+          <g fill="none" stroke="rgba(167,173,181,.5)" stroke-width="1.4">
+            <path d="M240 40 h60 v34 h-16 v46 h-28 V74 h-16z"/>
+            <path d="M262 120 h16 v40 l-8 16 -8 -16z"/>
+          </g>
+          <circle cx="270" cy="182" r="4" fill="#00B6FF"><animate attributeName="opacity" values="1;.2;1" dur="1.4s" repeatCount="indefinite"/></circle>
+          <!-- workpiece -->
+          <g fill="none" stroke="rgba(0,182,255,.55)" stroke-width="1.4">
+            <path d="M150 260 h220 l-16 46 H166z"/>
+            <circle cx="260" cy="238" r="40"/><circle cx="260" cy="238" r="22"/>
+          </g>
+          <g fill="none" stroke="rgba(167,173,181,.4)" stroke-dasharray="4 5">
+            <path d="M150 260 V210 M370 260 V210 M150 216 H370"/>
+            <path d="M260 190 V140 M260 286 V330"/>
+          </g>
+          <!-- scan ring -->
+          <circle cx="260" cy="238" r="54" fill="none" stroke="rgba(0,182,255,.7)" stroke-dasharray="12 300">
+            <animateTransform attributeName="transform" type="rotate" from="0 260 238" to="360 260 238" dur="3.2s" repeatCount="indefinite"/>
+          </circle>
+          <text x="386" y="212" font-family="Rajdhani" font-size="12" fill="#00B6FF" letter-spacing="2">Ø 80.000</text>
+          <text x="386" y="230" font-family="Rajdhani" font-size="11" fill="#A7ADB5" letter-spacing="2">TOL ±0.001</text>
+        </svg>
+        <div class="hud-br en">CMM INSPECTION<br><b>ISO 9001 : 2015</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CONTACT ============ -->
+<section id="contact">
+  <div class="contact-band rv">
+    <div>
+      <h2>お問い合わせ</h2>
+      <p class="sub">技術相談・お見積りはお気軽にご連絡ください。</p>
+      <div style="margin-top:28px"><a class="btn" href="mailto:info@seiko-works.jp">お問い合わせフォームへ <span class="arw">→</span></a></div>
+    </div>
+    <div class="contact-info">
+      <div class="ci-row">
+        <div class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a13 13 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2z"/></svg></div>
+        <div><div class="tel en">03-1234-5678</div><div class="note">平日 9:00-18:00</div></div>
+      </div>
+      <div class="ci-row">
+        <div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M3 7l9 6 9-6"/></svg></div>
+        <div><div class="tel en" style="font-size:18px">info@seiko-works.jp</div><div class="note">24時間受付</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="cp">© 2026 SEIKO MANUFACTURING CO., LTD.</div>
+  <div class="tags"><span>PRECISION</span><span>TRUST</span><span>INNOVATION</span></div>
+</footer>
+
+<script>
+/* ===== loader ===== */
+window.addEventListener('load',()=>{
+  setTimeout(()=>{
+    document.getElementById('loader').classList.add('done');
+    document.querySelector('.hero').classList.add('on');
+    startCounts();
+  },1400);
+});
+
+/* ===== nav scrolled state ===== */
+const header=document.getElementById('header');
+addEventListener('scroll',()=>{header.classList.toggle('scrolled',scrollY>40)},{passive:true});
+
+/* ===== parallax (hero bg + machine) ===== */
+const heroBg=document.getElementById('heroBg'),heroMachine=document.getElementById('heroMachine');
+addEventListener('scroll',()=>{
+  const y=scrollY;
+  if(y<innerHeight*1.2){
+    heroBg.style.transform=`translateY(${y*.25}px)`;
+    heroMachine.style.transform=`translateY(calc(-50% + ${y*.12}px))`;
+  }
+},{passive:true});
+
+/* ===== scroll reveal + mask reveal + schematic draw ===== */
+const io=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('in');
+      io.unobserve(e.target);
+    }
+  });
+},{threshold:.18,rootMargin:'0px 0px -6% 0px'});
+document.querySelectorAll('.rv,.mask-rv,.tech-card,.q-item').forEach(el=>io.observe(el));
+
+/* ===== count up ===== */
+function startCounts(){
+  document.querySelectorAll('.count').forEach(el=>{
+    const to=parseFloat(el.dataset.to),dec=+(el.dataset.dec||0),dur=+(el.dataset.dur||1600);
+    const t0=performance.now();
+    function tick(t){
+      const p=Math.min((t-t0)/dur,1),e=1-Math.pow(1-p,4);
+      el.textContent=(to*e).toFixed(dec);
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+
+/* ===== hero particles (dust & sparks) ===== */
+const cv=document.getElementById('particles'),cx=cv.getContext('2d');
+let W,H,ps=[];
+function resize(){
+  W=cv.width=cv.offsetWidth*devicePixelRatio;
+  H=cv.height=cv.offsetHeight*devicePixelRatio;
+}
+resize();addEventListener('resize',resize);
+const N=innerWidth<640?36:90;
+for(let i=0;i<N;i++){
+  ps.push({
+    x:Math.random(),y:Math.random(),
+    r:Math.random()*1.6+.4,
+    vx:(Math.random()-.5)*.0004,vy:-Math.random()*.0007-.0001,
+    a:Math.random()*.6+.15,ph:Math.random()*Math.PI*2
+  });
+}
+function loop(t){
+  cx.clearRect(0,0,W,H);
+  for(const p of ps){
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.y<-.02){p.y=1.02;p.x=Math.random()}
+    if(p.x<-.02)p.x=1.02;if(p.x>1.02)p.x=-.02;
+    const tw=.5+.5*Math.sin(t*.002+p.ph);
+    cx.beginPath();
+    cx.arc(p.x*W,p.y*H,p.r*devicePixelRatio,0,7);
+    cx.fillStyle=`rgba(0,182,255,${p.a*tw})`;
+    cx.shadowColor='rgba(0,182,255,.8)';cx.shadowBlur=6*devicePixelRatio;
+    cx.fill();cx.shadowBlur=0;
+  }
+  requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+</script>
+</body>
+</html>
